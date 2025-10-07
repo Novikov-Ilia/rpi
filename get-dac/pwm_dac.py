@@ -10,15 +10,24 @@ class R2R_DAC:
 
 
         GPIO.setmode(GPIO.BCM)
-        pwm = GPIO.PWM(self.gpio_pin, pwm_frequency)
-        pwm.start(0)
+        GPIO.setup(self.gpio_pin, GPIO.OUT)
+
+        self.pwm = GPIO.PWM(self.gpio_pin, self.pwm_frequency)
+        self.pwm.start(0)
         
 
     def denit():
+        self.pwm.stop()
         GPIO.output(self.gpio_pin, 0)
         GPIO.cleanup()
 
     def set_voltage(self, voltage):
+        if voltage < 0 or voltage > self.dynamic_range:
+            print("Напряжение выходит за диапазон\n")
+            return 0
+        
+        duty_cycle = (voltage/self.dynamic_range)*100
+        self.pwm.ChangeDutyCycle(duty_cycle)
         
 
 
