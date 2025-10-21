@@ -29,3 +29,10 @@ def wait_for_sampling_period(sampling_frequency):
     """
     sampling_period = 1.0 / sampling_frequency
     time.sleep(sampling_period)
+
+
+def get_triangle_wave_amplitude(freq,current_time):
+    period = 1.0/ freq
+    phase = current_time % period / period
+
+    return 2 * min (phase, 1 - phase)
